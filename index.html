@@ -147,59 +147,50 @@
         </div>
       </section>
 
-      <!-- Slide 3 -->
+      <!-- Slide 2: igual estilo hacker que el Slide 1 -->
       <section>
-        <h2>1️⃣ Identificación del Problema</h2>
-        <p>Ejemplo: Flotilla Meteque</p>
-        <p>Objetivo: <b>Trackear la ruta y estado</b></p>
+        <div class="pc-hacker">
+          <div class="screen-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="screen-body" style="display: flex; flex-direction: column; align-items: center;">
+            <pre class="hacker-terminal"><span id="typewriter-slide2"></span><span class="cursor">█</span></pre>
+            <pre class="hacker-fakecode" id="fakecode-slide2" style="width: 100%; max-width: 600px; text-align: left; margin-bottom: 18px; white-space: pre-wrap;"></pre>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+              
+              <button class="hacker-btn" id="btn-tracker-slide2" style="padding: 8px 20px; font-size: 1em;"
+                onclick="window.open('https://globalsumudflotilla.org/tracker/', '_blank')">Ver Tracker</button>
+              <button class="hacker-btn" id="btn-iniciar-slide2" style="padding: 8px 20px; font-size: 1em;">Continuar</button>
+            </div>
+            <audio id="hacker-audio-slide2" src="assets/hacker-keyboard.mp3" preload="auto"></audio>
+            <audio id="loading-audio-slide2" src="assets/loading-effect.mp3" preload="auto"></audio>
+          </div>
+        </div>
       </section>
-
-      <!-- Slide 4 -->
       <section>
-        <h2>2️⃣ Selección de Fórmulas</h2>
-        <p>Ejemplo: Fórmula de Haversine</p>
-        <p>$$ d = 2r \arcsin \left(\sqrt{ \sin^2\left(\frac{\Delta\phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta\lambda}{2}\right)}\right) $$</p>
+        <div class="pc-hacker">
+          <div class="screen-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="screen-body" style="display: flex; flex-direction: column; align-items: center;">
+            <pre class="hacker-terminal"><span id="typewriter-slide3"></span><span class="cursor">█</span></pre>
+            <pre class="hacker-fakecode" id="fakecode-slide3" style="width: 100%; max-width: 600px; text-align: left; margin-bottom: 18px; white-space: pre-wrap;"></pre>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+              <button class="hacker-btn" id="btn-colab-slide3" style="padding: 8px 20px; font-size: 1em;"
+                onclick="window.open('https://colab.research.google.com/drive/1-uL1YMX27l_LfltoxIYV8ypKHR4MKQtb?usp=sharing', '_blank')">
+                Abrir notebook interactivo en Google Colab
+              </button>
+            </div>
+            <audio id="hacker-audio-slide3" src="assets/hacker-keyboard.mp3" preload="auto"></audio>
+            <audio id="loading-audio-slide3" src="assets/loading-effect.mp3" preload="auto"></audio>
+          </div>
+        </div>
       </section>
-
-      <!-- Slide 5 -->
-      <section>
-        <h2>3️⃣ Datos Iniciales</h2>
-        <pre><code>
-Barco A: (31.7758, 33.1708)
-Barco B: (31.5, 34.47)
-        </code></pre>
-      </section>
-
-      <!-- Slide 6 -->
-      <section>
-        <h2>4️⃣ Ejecución en Python</h2>
-        <pre><code class="python">
-from math import radians, sin, cos, sqrt, atan2
-
-def haversine(lat1, lon1, lat2, lon2):
-    R = 6371
-    dlat = radians(lat2-lat1)
-    dlon = radians(lat2-lon1)
-    a = sin(dlat/2)**2 + cos(radians(lat1))*cos(radians(lat2))*sin(dlon/2)**2
-    c = 2*atan2(sqrt(a), sqrt(1-a))
-    return R * c
-
-print(haversine(31.7758, 33.1708, 31.5, 34.47))
-        </code></pre>
-      </section>
-
-      <!-- Slide 7 -->
-      <section>
-        <h2>5️⃣ Visualización en Mapa</h2>
-        <div id="map"></div>
-      </section>
-
-      <!-- Slide 8 -->
-      <section>
-        <h2>6️⃣ Conclusión</h2>
-        <p>El modelo computacional permite transformar datos y fórmulas en <b>resultados visuales claros</b>.</p>
-        <button onclick="window.location.href='conclusion.html'">Salir</button>
-      </section>
+     
 
     </div>
   </div>
@@ -297,6 +288,129 @@ print(haversine(31.7758, 33.1708, 31.5, 34.47))
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         L.marker([31.7758, 33.1708]).addTo(map).bindPopup("Meteque").openPopup();
         L.marker([31.5, 34.47]).addTo(map).bindPopup("Destino");
+      }
+    });
+
+    // Animación hacker para el título de identificación del problema
+    document.addEventListener('DOMContentLoaded', function() {
+      var text = '1️⃣ Identificación del Problema';
+      var typewriter = document.getElementById('typewriter-identificacion');
+      if(typewriter){
+        typewriter.textContent = '';
+        let i = 0;
+        function type() {
+          if (i < text.length) {
+            typewriter.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 60);
+          }
+        }
+        type();
+      }
+    });
+
+    // Animación y sonido hacker para Slide 2
+    Reveal.on('slidechanged', function(e) {
+      if (e.indexh === 1) { // Slide 2
+        var text = '¿Qué es un modelo computacional?';
+        var typewriter = document.getElementById('typewriter-slide2');
+        var btn = document.getElementById('btn-iniciar-slide2');
+        var audio = document.getElementById('hacker-audio-slide2');
+        var loadingAudio = document.getElementById('loading-audio-slide2');
+        var fakecode = document.getElementById('fakecode-slide2');
+        var codeLines = [
+          '>>Representación matemática de un sistema complejo que se utiliza para estudiar su comportamiento a través de la simulación por computadora.',
+          '>>Ejemplo: Caso real: trayecto del Meteque hacia Gaza.',
+          '>>>- Matemático → Haversine para calcular distancias.',
+          '>>>- Computacional → función Python que recibe coordenadas y entrega la distancia.',
+          
+        ];
+        if(typewriter && fakecode && btn && audio && loadingAudio) {
+          typewriter.textContent = '';
+          fakecode.textContent = '';
+          btn.disabled = true;
+          btn.style.opacity = "0.5";
+          let i = 0;
+          function typeEffect() {
+            if (i < text.length) {
+              typewriter.textContent += text.charAt(i);
+              i++;
+              setTimeout(typeEffect, 60);
+            } else {
+              // Sonido de teclado mientras se muestra el código falso
+              audio.currentTime = 0;
+              audio.play();
+              let j = 0;
+              function showCodeLine() {
+                if (j < codeLines.length) {
+                  fakecode.textContent += codeLines[j] + '\n';
+                  j++;
+                  setTimeout(showCodeLine, 350);
+                } else {
+                  audio.pause();
+                  btn.disabled = false;
+                  btn.style.opacity = "1";
+                }
+              }
+              showCodeLine();
+            }
+          }
+          typeEffect();
+          btn.onclick = function() {
+            loadingAudio.currentTime = 0;
+            loadingAudio.play();
+            setTimeout(function(){ Reveal.next(); }, 900);
+          };
+        }
+      }
+    });
+
+    // Animación y sonido hacker para Slide 3
+    Reveal.on('slidechanged', function(e) {
+      if (e.indexh === 2) { // Slide 3
+        var text = '2️⃣ Caso real: Meteque (Qalqilya)';
+        var typewriter = document.getElementById('typewriter-slide3');
+        var audio = document.getElementById('hacker-audio-slide3');
+        var fakecode = document.getElementById('fakecode-slide3');
+        var codeLines = [
+          'Datos reales del tracker:',
+          '- Latitud: 31.7758° N',
+          '- Longitud: 33.1708° E',
+          '- Velocidad: 2.16 nudos',
+          '- Course (rumbo): 112.5°',
+          '- Estado: assumed intercepted',
+          '- Destino: Gaza (31.5° N, 34.47° E)',
+          '',
+          'Aplicaremos el modelo matemático.',
+          'Puedes explorar el notebook interactivo abajo.'
+        ];
+        if(typewriter && fakecode && audio) {
+          typewriter.textContent = '';
+          fakecode.textContent = '';
+          let i = 0;
+          function typeEffect() {
+            if (i < text.length) {
+              typewriter.textContent += text.charAt(i);
+              i++;
+              setTimeout(typeEffect, 60);
+            } else {
+              audio.currentTime = 0;
+              audio.play();
+              let j = 0;
+              function showCodeLine() {
+                if (j < codeLines.length) {
+                  fakecode.textContent += codeLines[j] + '\n';
+                  j++;
+                  setTimeout(showCodeLine, 350);
+                } else {
+                  audio.pause();
+                }
+              }
+              showCodeLine();
+            }
+          }
+          typeEffect();
+        }
       }
     });
   </script>
