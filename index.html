@@ -30,11 +30,21 @@
         <h1>💻 Modelo Computacional</h1>
         <img src="assets/computer.png" width="200">
         <p><button onclick="Reveal.next()">Iniciar</button></p>
-      </section>
-
-      <!-- Slide 2 -->
       <section>
-        <h2>📊 ¿Cómo funciona?</h2>
+        <div class="pc-screen">
+          <div class="screen-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="screen-body">
+            <h1 class="hacker-text">Modelo Computacional</h1>
+            <img src="assets/computer.png" width="120" style="margin: 20px 0;">
+            <button class="hacker-btn" id="btn-iniciar">Iniciar</button>
+            <audio id="hacker-audio" src="assets/hacker-keyboard.mp3"></audio>
+          </div>
+        </div>
+      </section>
         <img src="assets/diagrama.png" width="500">
         <p>Formulaciones matemáticas → Computación → Resultados</p>
       </section>
@@ -103,6 +113,19 @@ print(haversine(31.7758, 33.1708, 31.5, 34.47))
     Reveal.initialize({
       hash: true,
       plugins: [ RevealMath.KaTeX ]
+    });
+
+    // Sonido hacker al iniciar
+    document.addEventListener('DOMContentLoaded', function() {
+      var btn = document.getElementById('btn-iniciar');
+      var audio = document.getElementById('hacker-audio');
+      if(btn && audio) {
+        btn.addEventListener('click', function() {
+          audio.currentTime = 0;
+          audio.play();
+          setTimeout(function(){ Reveal.next(); }, 600); // Espera breve para el sonido
+        });
+      }
     });
 
     // activar mapa en slide 7
