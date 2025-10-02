@@ -19,34 +19,132 @@
     }
     button:hover { background: #e68900; }
     #map { height: 400px; width: 600px; }
+    .pc-hacker {
+      max-width: 700px;
+      margin: 60px auto 0 auto;
+      background: #181818;
+      border-radius: 16px;
+      box-shadow: 0 0 32px #00ff2a44, 0 0 0 4px #00ff2a22;
+      padding: 32px 32px 40px 32px;
+      font-family: 'Fira Mono', 'Consolas', monospace;
+      position: relative;
+    }
+    .screen-header {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      display: inline-block;
+    }
+    .red { background: #ff3b3b; }
+    .yellow { background: #ffe22b; }
+    .green { background: #2bff3b; }
+    .screen-body {
+      background: #111;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 0 24px #00ff2a22 inset;
+    }
+    .hacker-terminal {
+      font-size: 2.8em;
+      color: #00ff2a;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .cursor {
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    .hacker-fakecode {
+      font-size: 1.2em;
+      color: #00ffea;
+      background: none;
+      border: none;
+      margin-bottom: 18px;
+      min-height: 120px;
+      padding: 0;
+    }
+    .hacker-btn {
+      margin-top: 18px;
+      font-size: 1.2em;
+      background: #ff9800;
+      color: #fff;
+      border-radius: 8px;
+      border: none;
+      padding: 12px 32px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      box-shadow: 0 2px 8px #0004;
+      transition: background 0.2s;
+    }
+    .hacker-btn:hover { background: #e68900; }
+    /* Overlay para activar sonido */
+    #sound-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #111d;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+    #sound-overlay .overlay-content {
+      background: #222;
+      color: #00ff2a;
+      padding: 40px 60px;
+      border-radius: 16px;
+      box-shadow: 0 0 32px #00ff2a44;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      cursor: pointer;
+      border: 2px solid #00ff2a;
+    }
+    #sound-overlay .overlay-content:hover {
+      background: #111;
+      color: #fff;
+      border-color: #fff;
+    }
   </style>
 </head>
 <body>
+  <!-- Overlay para activar sonido -->
+  <div id="sound-overlay">
+    <div class="overlay-content">
+      Haz clic para activar el sonido y la animación 
+    </div>
+  </div>
   <div class="reveal">
     <div class="slides">
 
       <!-- Slide 1 -->
       <section>
-        <h1>💻 Modelo Computacional</h1>
-        <img src="assets/computer.png" width="200">
-        <p><button onclick="Reveal.next()">Iniciar</button></p>
-      <section>
-        <div class="pc-screen">
+        <div class="pc-hacker">
           <div class="screen-header">
             <span class="dot red"></span>
             <span class="dot yellow"></span>
             <span class="dot green"></span>
           </div>
           <div class="screen-body">
-            <h1 class="hacker-text">Modelo Computacional</h1>
-            <img src="assets/computer.png" width="120" style="margin: 20px 0;">
-            <button class="hacker-btn" id="btn-iniciar">Iniciar</button>
-            <audio id="hacker-audio" src="assets/hacker-keyboard.mp3"></audio>
+            <pre class="hacker-terminal"><span id="typewriter"></span><span class="cursor">█</span></pre>
+            <pre class="hacker-fakecode" id="fakecode"></pre>
+            <button class="hacker-btn" id="btn-iniciar">Inicial</button>
+            <audio id="hacker-audio" src="assets/hacker-keyboard.mp3" preload="auto"></audio>
+            <audio id="loading-audio" src="assets/loading-effect.mp3" preload="auto"></audio>
+
           </div>
         </div>
-      </section>
-        <img src="assets/diagrama.png" width="500">
-        <p>Formulaciones matemáticas → Computación → Resultados</p>
       </section>
 
       <!-- Slide 3 -->
@@ -81,7 +179,7 @@ from math import radians, sin, cos, sqrt, atan2
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371
     dlat = radians(lat2-lat1)
-    dlon = radians(lon2-lon1)
+    dlon = radians(lat2-lon1)
     a = sin(dlat/2)**2 + cos(radians(lat1))*cos(radians(lat2))*sin(dlon/2)**2
     c = 2*atan2(sqrt(a), sqrt(1-a))
     return R * c
@@ -115,17 +213,81 @@ print(haversine(31.7758, 33.1708, 31.5, 34.47))
       plugins: [ RevealMath.KaTeX ]
     });
 
-    // Sonido hacker al iniciar
-    document.addEventListener('DOMContentLoaded', function() {
+    // Animación de texto tipo hacker, cursor parpadeante y líneas de código falsas
+    function startHackerIntro() {
+      var text = 'MODELO COMPUTACIONAL';
+      var typewriter = document.getElementById('typewriter');
       var btn = document.getElementById('btn-iniciar');
       var audio = document.getElementById('hacker-audio');
-      if(btn && audio) {
+      var loadingAudio = document.getElementById('loading-audio');
+      var fakecode = document.getElementById('fakecode');
+      var codeLines = [
+        '>>> Initializing system... [OK]',
+        '>>> Loading modules: model.py, compute.js, style.css',
+        '>>> Connecting to server 127.0.0.1:8080',
+        '>>> Access granted. Welcome, user.',
+        '>>> Running: modelo_computacional()',
+        '>>> Output: Ready for computation.'
+      ];
+      var i = 0;
+      var speed = 80;
+      // Deshabilita el botón hasta que termine el efecto hacker
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      // Cursor parpadeante
+      var cursor = document.querySelector('.cursor');
+      setInterval(function(){
+        if(cursor) cursor.style.opacity = (cursor.style.opacity === '0' ? '1' : '0');
+      }, 500);
+
+      // Animación de texto y código
+      function typeEffect() {
+        if (i < text.length) {
+          typewriter.textContent += text.charAt(i);
+          i++;
+          setTimeout(typeEffect, speed);
+        } else {
+          // Sonido de teclado mientras se muestra el código falso
+          if(audio) {
+            audio.currentTime = 0;
+            audio.play();
+          }
+          // Mostrar líneas de código falsas una a una
+          let j = 0;
+          function showCodeLine() {
+            if (j < codeLines.length) {
+              fakecode.textContent += codeLines[j] + '\n';
+              j++;
+              setTimeout(showCodeLine, 350);
+            } else {
+              if(audio) audio.pause(); // Detener sonido al terminar
+              // Habilita el botón "Inicial" al terminar el efecto hacker
+              btn.disabled = false;
+              btn.style.opacity = "1";
+            }
+          }
+          showCodeLine();
+        }
+      }
+      typeEffect();
+
+      // Sonido de carga y avanzar al hacer clic en el botón
+      if(btn && loadingAudio) {
         btn.addEventListener('click', function() {
-          audio.currentTime = 0;
-          audio.play();
-          setTimeout(function(){ Reveal.next(); }, 600); // Espera breve para el sonido
+          loadingAudio.currentTime = 0;
+          loadingAudio.play();
+          setTimeout(function(){ Reveal.next(); }, 900);
         });
       }
+    }
+
+    // Espera la interacción del usuario para iniciar animación y sonido
+    document.addEventListener('DOMContentLoaded', function() {
+      var overlay = document.getElementById('sound-overlay');
+      overlay.addEventListener('click', function() {
+        overlay.style.display = 'none';
+        startHackerIntro();
+      });
     });
 
     // activar mapa en slide 7
