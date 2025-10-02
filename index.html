@@ -21,11 +21,11 @@
     #map { height: 400px; width: 600px; }
     .pc-hacker {
       max-width: 700px;
-      margin: 60px auto 0 auto;
+      margin: 0 auto 0 auto; /* elimina margen superior */
       background: #181818;
       border-radius: 16px;
       box-shadow: 0 0 32px #00ff2a44, 0 0 0 4px #00ff2a22;
-      padding: 32px 32px 40px 32px;
+      padding: 12px 32px 20px 32px; /* reduce padding superior */
       font-family: 'Fira Mono', 'Consolas', monospace;
       position: relative;
     }
@@ -115,6 +115,14 @@
       background: #111;
       color: #fff;
       border-color: #fff;
+    }
+    .reveal .slides {
+      display: block !important;
+    }
+
+    .reveal .slides section {
+      margin-top: 0 !important;
+      padding-top: 10px !important; /* Ajusta este valor para subir más o menos */
     }
   </style>
 </head>
