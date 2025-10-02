@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Modelo Computacional</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    button {
+      padding: 12px 20px;
+      background: #ff9800;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    button:hover { background: #e68900; }
+    #map { height: 400px; width: 600px; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1 -->
+      <section>
+        <h1>💻 Modelo Computacional</h1>
+        <img src="assets/computer.png" width="200">
+        <p><button onclick="Reveal.next()">Iniciar</button></p>
+      </section>
+
+      <!-- Slide 2 -->
+      <section>
+        <h2>📊 ¿Cómo funciona?</h2>
+        <img src="assets/diagrama.png" width="500">
+        <p>Formulaciones matemáticas → Computación → Resultados</p>
+      </section>
+
+      <!-- Slide 3 -->
+      <section>
+        <h2>1️⃣ Identificación del Problema</h2>
+        <p>Ejemplo: Flotilla Meteque</p>
+        <p>Objetivo: <b>Trackear la ruta y estado</b></p>
+      </section>
+
+      <!-- Slide 4 -->
+      <section>
+        <h2>2️⃣ Selección de Fórmulas</h2>
+        <p>Ejemplo: Fórmula de Haversine</p>
+        <p>$$ d = 2r \arcsin \left(\sqrt{ \sin^2\left(\frac{\Delta\phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta\lambda}{2}\right)}\right) $$</p>
+      </section>
+
+      <!-- Slide 5 -->
+      <section>
+        <h2>3️⃣ Datos Iniciales</h2>
+        <pre><code>
+Barco A: (31.7758, 33.1708)
+Barco B: (31.5, 34.47)
+        </code></pre>
+      </section>
+
+      <!-- Slide 6 -->
+      <section>
+        <h2>4️⃣ Ejecución en Python</h2>
+        <pre><code class="python">
+from math import radians, sin, cos, sqrt, atan2
+
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371
+    dlat = radians(lat2-lat1)
+    dlon = radians(lon2-lon1)
+    a = sin(dlat/2)**2 + cos(radians(lat1))*cos(radians(lat2))*sin(dlon/2)**2
+    c = 2*atan2(sqrt(a), sqrt(1-a))
+    return R * c
+
+print(haversine(31.7758, 33.1708, 31.5, 34.47))
+        </code></pre>
+      </section>
+
+      <!-- Slide 7 -->
+      <section>
+        <h2>5️⃣ Visualización en Mapa</h2>
+        <div id="map"></div>
+      </section>
+
+      <!-- Slide 8 -->
+      <section>
+        <h2>6️⃣ Conclusión</h2>
+        <p>El modelo computacional permite transformar datos y fórmulas en <b>resultados visuales claros</b>.</p>
+        <button onclick="window.location.href='conclusion.html'">Salir</button>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/math/math.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      plugins: [ RevealMath.KaTeX ]
+    });
+
+    // activar mapa en slide 7
+    Reveal.on('slidechanged', e => {
+      if(e.indexh === 6 && !window.map){
+        window.map = L.map('map').setView([31.7758, 33.1708], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        L.marker([31.7758, 33.1708]).addTo(map).bindPopup("Meteque").openPopup();
+        L.marker([31.5, 34.47]).addTo(map).bindPopup("Destino");
+      }
+    });
+  </script>
+</body>
+</html>
